@@ -26,4 +26,11 @@ class APIFunctions{
             self.delegate?.updateArray(newArray: data!)
         }
     }
+    
+    func createTest(date:String, reading:String, notes:String){
+        var requestURL = "http://192.168.1.71:8081/create"
+        AF.request(requestURL).response { response in
+            let data = String(data: response.data!, encoding: .utf8)
+        }
+    }
 }
