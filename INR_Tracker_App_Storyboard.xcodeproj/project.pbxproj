@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A404D5EA2B3740B600FFA8CC /* AddTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A404D5E92B3740B600FFA8CC /* AddTestViewController.swift */; };
 		A478EE5A2B353C1D0055A642 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478EE592B353C1D0055A642 /* AppDelegate.swift */; };
 		A478EE5C2B353C1D0055A642 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478EE5B2B353C1D0055A642 /* SceneDelegate.swift */; };
 		A478EE5E2B353C1D0055A642 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478EE5D2B353C1D0055A642 /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A404D5E92B3740B600FFA8CC /* AddTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTestViewController.swift; sourceTree = "<group>"; };
 		A478EE562B353C1D0055A642 /* INR_Tracker_App_Storyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INR_Tracker_App_Storyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A478EE592B353C1D0055A642 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A478EE5B2B353C1D0055A642 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				A478EE642B353C1F0055A642 /* LaunchScreen.storyboard */,
 				A478EE672B353C1F0055A642 /* Info.plist */,
 				A478EE702B35423A0055A642 /* APIFunctions.swift */,
+				A404D5E92B3740B600FFA8CC /* AddTestViewController.swift */,
 			);
 			path = INR_Tracker_App_Storyboard;
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A478EE712B35423A0055A642 /* APIFunctions.swift in Sources */,
+				A404D5EA2B3740B600FFA8CC /* AddTestViewController.swift in Sources */,
 				A478EE5E2B353C1D0055A642 /* ViewController.swift in Sources */,
 				A478EE5A2B353C1D0055A642 /* AppDelegate.swift in Sources */,
 				A478EE5C2B353C1D0055A642 /* SceneDelegate.swift in Sources */,

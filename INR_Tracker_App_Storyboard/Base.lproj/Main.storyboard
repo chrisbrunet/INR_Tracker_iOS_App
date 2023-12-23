@@ -27,6 +27,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="aI8-EW-hO7" kind="show" identifier="viewTestSegue" id="KkG-j7-8xP"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -58,7 +61,7 @@
         <!--New Test-->
         <scene sceneID="szI-VW-hRF">
             <objects>
-                <viewController id="aI8-EW-hO7" sceneMemberID="viewController">
+                <viewController id="aI8-EW-hO7" customClass="AddTestViewController" customModule="INR_Tracker_App_Storyboard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Vph-MM-UNO">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -95,10 +98,24 @@
                         <rightBarButtonItems>
                             <barButtonItem title="Delete" id="tXT-x7-5WS">
                                 <color key="tintColor" systemColor="systemRedColor"/>
+                                <connections>
+                                    <action selector="deleteClick:" destination="aI8-EW-hO7" id="zQm-sI-5we"/>
+                                </connections>
                             </barButtonItem>
-                            <barButtonItem title="Save" id="NwN-3C-pZk"/>
+                            <barButtonItem title="Save" id="NwN-3C-pZk">
+                                <connections>
+                                    <action selector="saveClick:" destination="aI8-EW-hO7" id="Rli-Ph-dU0"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <outlet property="dateField" destination="suX-Wg-3tX" id="81L-h6-rGC"/>
+                        <outlet property="deleteButton" destination="tXT-x7-5WS" id="gNV-PD-C2L"/>
+                        <outlet property="notesField" destination="ZTO-gf-U2M" id="GVv-Jl-6cQ"/>
+                        <outlet property="readingField" destination="GGo-7A-DC9" id="hLJ-MC-Bpk"/>
+                        <outlet property="saveButton" destination="NwN-3C-pZk" id="QHv-dI-vbe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7pX-rc-GbC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -123,6 +140,9 @@
             <point key="canvasLocation" x="46.564885496183201" y="-2.1126760563380285"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="KkG-j7-8xP"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

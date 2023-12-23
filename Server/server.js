@@ -1,8 +1,8 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const bodyParser = require('body-parser')
 var app = express()
 var Data = require("./inrSchema")
-const { error } = require("console")
 
 mongoose.connect("mongodb://localhost/inrDB")
 mongoose.connection.once("open", () => {
@@ -11,13 +11,18 @@ mongoose.connection.once("open", () => {
     console.log("Failed to Connect to DB: " + error)
 })
 
+app.use(bodyParser.json())
+
 // Create a test
 // http://192.168.1.71:8081/create
 app.post("/create", (req, res) => {
 
-    const date = new Date(req.query.date)
-    const reading = req.query.reading
-    const notes = req.query.notes
+    console.log("PRINTING REQUEST BODY")
+    console.log(req.body)
+
+    const date = new Date(req.body.date)
+    const reading = req.body.reading
+    const notes = req.body.notes
 
     var newTest = new Data({
         date: date,
@@ -48,10 +53,13 @@ app.get("/fetch", (req, res) => {
 // http://192.168.1.71:8081/update
 app.post("/update", (req, res) => {
 
-    const id = req.query.id
-    const date = new Date(req.query.date)
-    const reading = req.query.reading
-    const notes = req.query.notes
+    console.log("PRINTING REQUEST BODY")
+    console.log(req.body)
+
+    const id = req.body.id
+    const date = new Date(req.body.date)
+    const reading = req.body.reading
+    const notes = req.body.notes
 
     Data.findOneAndUpdate({
         _id: id
@@ -74,7 +82,10 @@ app.post("/update", (req, res) => {
 // http://192.168.1.71:8081/delete
 app.post("/delete", (req, res) => {
 
-    const id = req.query.id
+    console.log("PRINTING REQUEST BODY")
+    console.log(req.body)
+
+    const id = req.body.id
 
     Data.findOneAndDelete({
         _id: id
