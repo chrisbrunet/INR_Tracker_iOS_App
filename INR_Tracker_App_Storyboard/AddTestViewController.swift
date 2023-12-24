@@ -30,8 +30,10 @@ class AddTestViewController: UIViewController {
         
         if update == true{
             APIFunctions.functions.updateTest(id: test!._id, date: dateString, reading: readingField.text!, notes: notesField.text!)
+            print("Test updated")
         } else {
             APIFunctions.functions.createTest(date: dateString, reading: readingField.text!, notes: notesField.text!)
+            print("Test created")
         }
         self.navigationController?.popViewController(animated: true)
     }
@@ -39,6 +41,7 @@ class AddTestViewController: UIViewController {
     
     @IBAction func deleteClick(_ sender: Any) {
         APIFunctions.functions.deleteTest(id: test!._id)
+        print("Test deleted")
         self.navigationController?.popViewController(animated: true)
     }
     
