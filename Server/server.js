@@ -132,8 +132,10 @@ app.post("/delete", (req, res) => {
     })
 })
 
-var server = app.listen(8081, "localhost", () => {
-    console.log("Server is running")
+
+const PORT = process.env.PORT || 8081
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}...`)
 })
 
 function parseCustomDate(dateString) {
