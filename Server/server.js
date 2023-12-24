@@ -17,12 +17,23 @@ app.use(bodyParser.json())
 // http://192.168.1.71:8081/create
 app.post("/create", (req, res) => {
 
-    console.log("PRINTING REQUEST BODY")
-    console.log(req.body)
+    let date, reading, notes
 
-    const date = new Date(req.body.date)
-    const reading = req.body.reading
-    const notes = req.body.notes
+    if(req.body.date && req.body.reading){
+        console.log("PRINTING REQUEST BODY")
+        console.log(req.body)
+
+        date = parseCustomDate(req.body.date)
+        reading = req.body.reading
+        notes = req.body.notes
+    } else {
+        console.log("PRINTING REQUEST QUERY")
+        console.log(req.query)
+
+        date = parseCustomDate(req.query.date)
+        reading = req.query.reading
+        notes = req.query.notes
+    }
 
     var newTest = new Data({
         date: date,
@@ -53,13 +64,25 @@ app.get("/fetch", (req, res) => {
 // http://192.168.1.71:8081/update
 app.post("/update", (req, res) => {
 
-    console.log("PRINTING REQUEST BODY")
-    console.log(req.body)
+    let id, date, reading, notes
 
-    const id = req.body.id
-    const date = new Date(req.body.date)
-    const reading = req.body.reading
-    const notes = req.body.notes
+    if(req.body.date && req.body.reading){
+        console.log("PRINTING REQUEST BODY")
+        console.log(req.body)
+
+        id = req.body.id
+        date = parseCustomDate(req.body.date)
+        reading = req.body.reading
+        notes = req.body.notes
+    } else {
+        console.log("PRINTING REQUEST QUERY")
+        console.log(req.query)
+
+        id = req.query.id
+        date = parseCustomDate(req.query.date)
+        reading = req.query.reading
+        notes = req.query.notes
+    }
 
     Data.findOneAndUpdate({
         _id: id
@@ -82,10 +105,19 @@ app.post("/update", (req, res) => {
 // http://192.168.1.71:8081/delete
 app.post("/delete", (req, res) => {
 
-    console.log("PRINTING REQUEST BODY")
-    console.log(req.body)
+    let id
 
-    const id = req.body.id
+    if(req.body.id){
+        console.log("PRINTING REQUEST BODY")
+        console.log(req.body)
+
+        id = req.body.id
+    } else {
+        console.log("PRINTING REQUEST QUERY")
+        console.log(req.query)
+
+        id = req.query.id
+    }
 
     Data.findOneAndDelete({
         _id: id
@@ -103,3 +135,19 @@ app.post("/delete", (req, res) => {
 var server = app.listen(8081, "192.168.1.71", () => {
     console.log("Server is running")
 })
+
+function parseCustomDate(dateString) {
+    const parts = dateString.split(' ')
+    const dateParts = parts[0].split('-')
+    const timeParts = parts[1].split(':')
+
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1
+    const day = parseInt(dateParts[2])
+
+    const hour = parseInt(timeParts[0])
+    const minute = parseInt(timeParts[1])
+    const second = parseInt(timeParts[2])
+
+    return new Date(year, month, day, hour, minute, second);
+}

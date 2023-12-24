@@ -26,10 +26,14 @@ class AddTestViewController: UIViewController {
         
         print(dateField.date)
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZZ"
+        let dateString = dateFormatter.string(from: dateField.date)
+        
         if update == true{
-            APIFunctions.functions.updateTest(id: test!._id, date: "2023-12-24", reading: readingField.text!, notes: notesField.text!)
+            APIFunctions.functions.updateTest(id: test!._id, date: dateString, reading: readingField.text!, notes: notesField.text!)
         } else {
-            APIFunctions.functions.createTest(date: "2023-12-24", reading: readingField.text!, notes: notesField.text!)
+            APIFunctions.functions.createTest(date: dateString, reading: readingField.text!, notes: notesField.text!)
         }
         self.navigationController?.popViewController(animated: true)
     }
