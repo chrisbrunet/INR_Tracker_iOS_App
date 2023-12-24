@@ -23,9 +23,7 @@ class AddTestViewController: UIViewController {
     @IBOutlet var deleteButton: UIBarButtonItem!
     
     @IBAction func saveClick(_ sender: Any) {
-        
-        print(dateField.date)
-        
+                
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZZ"
         let dateString = dateFormatter.string(from: dateField.date)
@@ -54,9 +52,14 @@ class AddTestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("controller connected")
-        
+                
         if update == true{
-            //dateField.date = test!.date
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            if let dateString = test?.date,
+               let date = dateFormatter.date(from: dateString) {
+                dateField.date = date
+            }
             readingField.text = test!.reading
             notesField.text = test?.notes
         }
