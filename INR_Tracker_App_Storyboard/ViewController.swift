@@ -29,7 +29,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "prototypeCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "prototypeCell", for: indexPath) as! TestPrototypeCell
         
         var formattedDate = ""
         let dateString = inrArray[indexPath.row].date
@@ -44,7 +44,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let inr = inrArray[indexPath.row].reading
         
-        cell.textLabel?.text = formattedDate + " - INR: " + inr
+        cell.date?.text = formattedDate
+        cell.reading?.text = inr
         return cell
     }
     

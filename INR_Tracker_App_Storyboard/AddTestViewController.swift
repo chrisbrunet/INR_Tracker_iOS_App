@@ -23,6 +23,9 @@ class AddTestViewController: UIViewController {
     @IBOutlet var deleteButton: UIBarButtonItem!
     
     @IBAction func saveClick(_ sender: Any) {
+        
+        print(dateField.date)
+        
         if update == true{
             APIFunctions.functions.updateTest(id: test!._id, date: "2023-12-24", reading: readingField.text!, notes: notesField.text!)
         } else {

@@ -16,6 +16,7 @@
 		A478EE662B353C1F0055A642 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A478EE642B353C1F0055A642 /* LaunchScreen.storyboard */; };
 		A478EE6F2B3541FB0055A642 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A478EE6E2B3541FB0055A642 /* Alamofire */; };
 		A478EE712B35423A0055A642 /* APIFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478EE702B35423A0055A642 /* APIFunctions.swift */; };
+		A4AEFDF12B37E34E009EA0E1 /* TestPrototypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AEFDF02B37E34E009EA0E1 /* TestPrototypeCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		A478EE652B353C1F0055A642 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A478EE672B353C1F0055A642 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A478EE702B35423A0055A642 /* APIFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIFunctions.swift; sourceTree = "<group>"; };
+		A4AEFDF02B37E34E009EA0E1 /* TestPrototypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPrototypeCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				A478EE672B353C1F0055A642 /* Info.plist */,
 				A478EE702B35423A0055A642 /* APIFunctions.swift */,
 				A404D5E92B3740B600FFA8CC /* AddTestViewController.swift */,
+				A4AEFDF02B37E34E009EA0E1 /* TestPrototypeCell.swift */,
 			);
 			path = INR_Tracker_App_Storyboard;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 			files = (
 				A478EE712B35423A0055A642 /* APIFunctions.swift in Sources */,
 				A404D5EA2B3740B600FFA8CC /* AddTestViewController.swift in Sources */,
+				A4AEFDF12B37E34E009EA0E1 /* TestPrototypeCell.swift in Sources */,
 				A478EE5E2B353C1D0055A642 /* ViewController.swift in Sources */,
 				A478EE5A2B353C1D0055A642 /* AppDelegate.swift in Sources */,
 				A478EE5C2B353C1D0055A642 /* SceneDelegate.swift in Sources */,
