@@ -132,7 +132,7 @@ app.post("/delete", (req, res) => {
     })
 })
 
-var server = app.listen(8081, "192.168.1.71", () => {
+var server = app.listen(8081, "localhost", () => {
     console.log("Server is running")
 })
 

@@ -17,24 +17,29 @@ struct Test: Decodable {
 
 class APIFunctions{
     
+    let ip = "localhost"
+    let port = "8081"
+    
     var delegate: DataDelegate?
     static let functions = APIFunctions()
     
     func fetchTests(){
-        AF.request("http://192.168.1.71:8081/fetch").response { response in
+        let urlBody = "http://" + ip + ":" + port + "/fetch"
+        AF.request(urlBody).response { response in
             let data = String(data: response.data!, encoding: .utf8)
             self.delegate?.updateArray(newArray: data!)
         }
     }
     
     func createTest(date: String, reading: String, notes: String) {
+        let urlBody = "http://" + ip + ":" + port + "/create"
         let parameters: [String: String] = [
             "date": date,
             "reading": reading,
             "notes": notes
         ]
 
-        AF.request("http://192.168.1.71:8081/create",
+        AF.request(urlBody,
                    method: .post,
                    parameters: parameters,
                    encoder: JSONParameterEncoder.default,
@@ -45,6 +50,7 @@ class APIFunctions{
     }
     
     func updateTest(id:String, date: String, reading: String, notes: String) {
+        let urlBody = "http://" + ip + ":" + port + "/update"
         let parameters: [String: String] = [
             "id": id,
             "date": date,
@@ -52,7 +58,7 @@ class APIFunctions{
             "notes": notes
         ]
 
-        AF.request("http://192.168.1.71:8081/update",
+        AF.request(urlBody,
                    method: .post,
                    parameters: parameters,
                    encoder: JSONParameterEncoder.default,
@@ -63,11 +69,12 @@ class APIFunctions{
     }
     
     func deleteTest(id:String) {
+        let urlBody = "http://" + ip + ":" + port + "/delete"
         let parameters: [String: String] = [
             "id": id
         ]
 
-        AF.request("http://192.168.1.71:8081/delete",
+        AF.request(urlBody,
                    method: .post,
                    parameters: parameters,
                    encoder: JSONParameterEncoder.default,
