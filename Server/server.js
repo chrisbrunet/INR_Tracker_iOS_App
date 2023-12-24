@@ -3,8 +3,12 @@ const mongoose = require("mongoose")
 const bodyParser = require('body-parser')
 var app = express()
 var Data = require("./inrSchema")
+const config = require('./config')
 
-mongoose.connect("mongodb://localhost/inrDB")
+const username = config.username
+const password = config.password
+
+mongoose.connect(`mongodb+srv://${username}:${password}@cbcluster.nygn6bq.mongodb.net/inrDB`)
 mongoose.connection.once("open", () => {
     console.log("Connected to DB")
 }).on("error", (error) => {
@@ -14,7 +18,6 @@ mongoose.connection.once("open", () => {
 app.use(bodyParser.json())
 
 // Create a test
-// http://192.168.1.71:8081/create
 app.post("/create", (req, res) => {
 
     let date, reading, notes
@@ -52,7 +55,6 @@ app.post("/create", (req, res) => {
 })
 
 // Read all tests
-// http://192.168.1.71:8081/fetch
 app.get("/fetch", (req, res) => {
     Data.find({}).then((DBItems) => {
         console.log("All Data Fetched")
@@ -61,7 +63,6 @@ app.get("/fetch", (req, res) => {
 })
 
 // Update a test
-// http://192.168.1.71:8081/update
 app.post("/update", (req, res) => {
 
     let id, date, reading, notes
@@ -102,7 +103,6 @@ app.post("/update", (req, res) => {
 })
 
 // Delete a test
-// http://192.168.1.71:8081/delete
 app.post("/delete", (req, res) => {
 
     let id
