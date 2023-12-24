@@ -56,10 +56,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         APIFunctions.functions.fetchTests()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        APIFunctions.functions.fetchTests()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         APIFunctions.functions.delegate = self
@@ -75,7 +71,7 @@ extension ViewController: DataDelegate {
     func updateArray(newArray: String){
         do {
             inrArray = try JSONDecoder().decode([Test].self, from: newArray.data(using: .utf8)!)
-            print(inrArray)
+            print("Data decoded")
         } catch {
             print("Failed to decode")
         }
