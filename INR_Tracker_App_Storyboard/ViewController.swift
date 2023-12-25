@@ -16,11 +16,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var inrArray = [Test]()
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! AddTestViewController
-        
         if segue.identifier == "viewTestSegue" {
-            vc.test = inrArray[mainTableView.indexPathForSelectedRow!.row]
-            vc.update = true
+            if let vc = segue.destination as? AddTestViewController {
+                vc.test = inrArray[mainTableView.indexPathForSelectedRow!.row]
+                vc.update = true
+            }
         }
     }
     
