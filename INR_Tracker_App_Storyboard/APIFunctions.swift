@@ -17,14 +17,16 @@ struct Test: Decodable {
 
 class APIFunctions{
     
-    let ip = "localhost"
-    let port = "8081"
+//    let ip = "localhost"
+//    let port = "8081"
+    
+    let url = "https://inr-app-409117.uc.r.appspot.com/"
     
     var delegate: DataDelegate?
     static let functions = APIFunctions()
     
     func fetchTests(){
-        let urlBody = "http://" + ip + ":" + port + "/fetch"
+        let urlBody = url + "/fetch"
         AF.request(urlBody).response { response in
             let data = String(data: response.data!, encoding: .utf8)
             self.delegate?.updateArray(newArray: data!)
@@ -32,7 +34,7 @@ class APIFunctions{
     }
     
     func createTest(date: String, reading: String, notes: String) {
-        let urlBody = "http://" + ip + ":" + port + "/create"
+        let urlBody = url + "/create"
         let parameters: [String: String] = [
             "date": date,
             "reading": reading,
@@ -50,7 +52,7 @@ class APIFunctions{
     }
     
     func updateTest(id:String, date: String, reading: String, notes: String) {
-        let urlBody = "http://" + ip + ":" + port + "/update"
+        let urlBody = url + "/update"
         let parameters: [String: String] = [
             "id": id,
             "date": date,
@@ -69,7 +71,7 @@ class APIFunctions{
     }
     
     func deleteTest(id:String) {
-        let urlBody = "http://" + ip + ":" + port + "/delete"
+        let urlBody = url + "/delete"
         let parameters: [String: String] = [
             "id": id
         ]
