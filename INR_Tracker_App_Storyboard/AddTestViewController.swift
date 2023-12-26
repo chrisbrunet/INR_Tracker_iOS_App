@@ -13,7 +13,7 @@ class AddTestViewController: UIViewController {
     var update = false
     
     @IBOutlet weak var dateField: UIDatePicker!
-    
+
     @IBOutlet weak var readingField: UITextField!
     
     @IBOutlet weak var notesField: UITextField!
@@ -59,13 +59,15 @@ class AddTestViewController: UIViewController {
         if update == true{
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            dateFormatter.timeZone = TimeZone(identifier: "America/Denver")
             if let dateString = test?.date,
                let date = dateFormatter.date(from: dateString) {
+                print(date)
+                dateField.timeZone = TimeZone(identifier: "MST")
                 dateField.date = date
             }
             readingField.text = test!.reading
             notesField.text = test?.notes
         }
-       
     }
 }

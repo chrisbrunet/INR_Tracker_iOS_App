@@ -29,7 +29,7 @@ class APIFunctions{
     let port = "8081"
     let url = "https://inr-app-409117.uc.r.appspot.com/"
     
-    let local = true
+    let local = false
     
     var delegate: DataDelegate?
     static let functions = APIFunctions()
