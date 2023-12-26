@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A404D5EA2B3740B600FFA8CC /* AddTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A404D5E92B3740B600FFA8CC /* AddTestViewController.swift */; };
+		A4104F602B3B49EF007C61AE /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4104F5F2B3B49EF007C61AE /* ChartViewController.swift */; };
 		A478EE5A2B353C1D0055A642 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478EE592B353C1D0055A642 /* AppDelegate.swift */; };
 		A478EE5C2B353C1D0055A642 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478EE5B2B353C1D0055A642 /* SceneDelegate.swift */; };
 		A478EE5E2B353C1D0055A642 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A478EE5D2B353C1D0055A642 /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		A404D5E92B3740B600FFA8CC /* AddTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTestViewController.swift; sourceTree = "<group>"; };
+		A4104F5F2B3B49EF007C61AE /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		A478EE562B353C1D0055A642 /* INR_Tracker_App_Storyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INR_Tracker_App_Storyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A478EE592B353C1D0055A642 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A478EE5B2B353C1D0055A642 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				A478EE702B35423A0055A642 /* APIFunctions.swift */,
 				A404D5E92B3740B600FFA8CC /* AddTestViewController.swift */,
 				A4AEFDF02B37E34E009EA0E1 /* TestPrototypeCell.swift */,
+				A4104F5F2B3B49EF007C61AE /* ChartViewController.swift */,
 			);
 			path = INR_Tracker_App_Storyboard;
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A478EE712B35423A0055A642 /* APIFunctions.swift in Sources */,
+				A4104F602B3B49EF007C61AE /* ChartViewController.swift in Sources */,
 				A404D5EA2B3740B600FFA8CC /* AddTestViewController.swift in Sources */,
 				A4AEFDF12B37E34E009EA0E1 /* TestPrototypeCell.swift in Sources */,
 				A478EE5E2B353C1D0055A642 /* ViewController.swift in Sources */,

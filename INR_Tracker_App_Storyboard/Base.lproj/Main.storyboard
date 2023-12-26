@@ -189,27 +189,40 @@
         <!--Chart-->
         <scene sceneID="qRW-4h-XXt">
             <objects>
-                <viewController title="Chart" id="6KQ-Q8-YWO" sceneMemberID="viewController">
+                <viewController title="Chart" id="6KQ-Q8-YWO" customClass="ChartViewController" customModule="INR_Tracker_App_Storyboard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ir7-Ze-vZe">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="COMING SOON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ebc-J2-YGO">
-                                <rect key="frame" x="109" y="251" width="181" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y6y-5V-yaO">
+                                <rect key="frame" x="0.0" y="103" width="393" height="715"/>
+                                <connections>
+                                    <segue destination="fU2-6o-ADA" kind="embed" destinationCreationSelector="embedSwiftUIView:" id="6Kg-fI-CuJ"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="21l-pP-y5r"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="21l-pP-y5r" firstAttribute="bottom" secondItem="Y6y-5V-yaO" secondAttribute="bottom" id="545-tP-ciL"/>
+                            <constraint firstItem="Y6y-5V-yaO" firstAttribute="leading" secondItem="21l-pP-y5r" secondAttribute="leading" id="PQv-XW-NGQ"/>
+                            <constraint firstItem="Y6y-5V-yaO" firstAttribute="top" secondItem="21l-pP-y5r" secondAttribute="top" id="ZBr-oL-qQb"/>
+                            <constraint firstItem="21l-pP-y5r" firstAttribute="trailing" secondItem="Y6y-5V-yaO" secondAttribute="trailing" id="ZiN-41-jM0"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="INR Chart" id="TGf-oa-Li2"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4O-xC-1YK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="973" y="692"/>
+        </scene>
+        <!--Hosting Controller-->
+        <scene sceneID="gv5-BV-MMF">
+            <objects>
+                <hostingController id="fU2-6o-ADA" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wQB-sr-J9J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1824" y="694"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dhB-rd-ZIB">
