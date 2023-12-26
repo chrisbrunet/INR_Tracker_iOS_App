@@ -8,38 +8,60 @@
 import Foundation
 import Alamofire
 
-struct Test: Decodable {
+struct Test: Codable, Comparable {
     var _id: String
     var date: String
     var reading: String
     var notes: String
+    
+    static func < (lhs: Test, rhs: Test) -> Bool {
+            return lhs.date < rhs.date
+        }
+
+    static func == (lhs: Test, rhs: Test) -> Bool {
+        return lhs.date == rhs.date
+    }
 }
 
 class APIFunctions{
     
-//    let ip = "localhost"
-//    let port = "8081"
-    
+    let ip = "localhost"
+    let port = "8081"
     let url = "https://inr-app-409117.uc.r.appspot.com/"
+    
+    let local = true
     
     var delegate: DataDelegate?
     static let functions = APIFunctions()
     
     func fetchTests(){
-        let urlBody = url + "/fetch"
+        var urlBody = ""
+        if local {
+            urlBody = "http://" + ip + ":" + port + "/fetch"
+        } else {
+            urlBody = url + "/fetch"
+        }
         AF.request(urlBody).response { response in
             let data = String(data: response.data!, encoding: .utf8)
             self.delegate?.updateArray(newArray: data!)
+            print("INR Tests Fetched")
         }
     }
     
     func createTest(date: String, reading: String, notes: String) {
-        let urlBody = url + "/create"
+        var urlBody = ""
+        if local {
+            urlBody = "http://" + ip + ":" + port + "/create"
+        } else {
+            urlBody = url + "/create"
+        }
         let parameters: [String: String] = [
             "date": date,
             "reading": reading,
             "notes": notes
         ]
+        
+        print(parameters)
 
         AF.request(urlBody,
                    method: .post,
@@ -52,7 +74,12 @@ class APIFunctions{
     }
     
     func updateTest(id:String, date: String, reading: String, notes: String) {
-        let urlBody = url + "/update"
+        var urlBody = ""
+        if local {
+            urlBody = "http://" + ip + ":" + port + "/update"
+        } else {
+            urlBody = url + "/update"
+        }
         let parameters: [String: String] = [
             "id": id,
             "date": date,
@@ -71,7 +98,12 @@ class APIFunctions{
     }
     
     func deleteTest(id:String) {
-        let urlBody = url + "/delete"
+        var urlBody = ""
+        if local {
+            urlBody = "http://" + ip + ":" + port + "/delete"
+        } else {
+            urlBody = url + "/delete"
+        }
         let parameters: [String: String] = [
             "id": id
         ]

@@ -59,7 +59,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         APIFunctions.functions.delegate = self
-        APIFunctions.functions.fetchTests()
+//        APIFunctions.functions.fetchTests()
         
         mainTableView.delegate = self
         mainTableView.dataSource = self
@@ -71,7 +71,8 @@ extension ViewController: DataDelegate {
     func updateArray(newArray: String){
         do {
             inrArray = try JSONDecoder().decode([Test].self, from: newArray.data(using: .utf8)!)
-            print("Data decoded")
+            print("Data decoded - " + String(inrArray.count) + " entries")
+            inrArray.sort(by: { $0.date > $1.date })
         } catch {
             print("Failed to decode")
         }
