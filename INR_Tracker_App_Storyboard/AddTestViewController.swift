@@ -51,20 +51,22 @@ class AddTestViewController: UIViewController {
             self.deleteButton.title = ""
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("controller connected")
                 
-        if update == true{
+        if update == true {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
             dateFormatter.timeZone = TimeZone(identifier: "America/Denver")
+            
             if let dateString = test?.date,
                let date = dateFormatter.date(from: dateString) {
                 print(date)
-                dateField.timeZone = TimeZone(identifier: "MST")
-                dateField.date = date
+                let updatedDate = date.addingTimeInterval(7 * 3600) // manually adding 7 hours to the date because this is so painful
+                dateField.timeZone = TimeZone(identifier: "America/Denver")
+                dateField.setDate(updatedDate, animated: true)
             }
             readingField.text = test!.reading
             notesField.text = test?.notes
