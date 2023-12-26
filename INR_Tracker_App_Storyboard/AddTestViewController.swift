@@ -54,7 +54,7 @@ class AddTestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("controller connected")
+        print("Test Controller Connected")
                 
         if update == true {
             let dateFormatter = DateFormatter()

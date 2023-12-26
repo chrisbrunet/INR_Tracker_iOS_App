@@ -73,7 +73,7 @@
                     <navigationItem key="navigationItem" title="INR History" id="wga-uY-FZy">
                         <barButtonItem key="leftBarButtonItem" title="Chart" id="c6y-nC-Rl7">
                             <connections>
-                                <segue destination="6KQ-Q8-YWO" kind="show" id="IsR-Rt-fiL"/>
+                                <segue destination="6KQ-Q8-YWO" kind="show" identifier="viewChartSegue" id="IsR-Rt-fiL"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Add Test" id="qPl-mw-4VK">

@@ -8,11 +8,13 @@
 import Foundation
 import Alamofire
 
-struct Test: Codable, Comparable {
+struct Test: Codable, Comparable, Identifiable {
     var _id: String
     var date: String
     var reading: String
     var notes: String
+    
+    var id: String {return date}
     
     static func < (lhs: Test, rhs: Test) -> Bool {
             return lhs.date < rhs.date

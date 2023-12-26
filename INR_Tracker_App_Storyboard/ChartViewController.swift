@@ -11,26 +11,37 @@ import Charts
 
 class ChartViewController: UIViewController {
     
+    var data = [Test]()
+    
     @IBSegueAction func embedSwiftUIView(_ coder: NSCoder) -> UIViewController? {
-        return UIHostingController(coder: coder, rootView: SwiftUIView())
+        return UIHostingController(coder: coder, rootView: ContentView(data: data))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("Chart Controller Connected")
     }
 }
 
-struct SwiftUIView: View {
+struct ContentView: View {
+    
+    var data: [Test]
+    
     var body: some View {
-        ZStack {
-            Color.pink
-            Button("Hello, SwiftUI!") {
-                
+        Chart {
+            ForEach(data) { dataPoint in
+                LineMark(x: .value("Date", dataPoint.date),
+                         y: .value("INR", Double(dataPoint.reading)!))
             }
-            .font(.title)
-            .buttonStyle(.borderedProminent)
-            .padding()
+            
+            RuleMark(y: .value("MinTR", 2))
+                .foregroundStyle(.red)
+            
+            RuleMark(y: .value("MaxTR", 3.5))
+                .foregroundStyle(.red)
+            
         }
-        .navigationTitle("SwiftUI View")
+        .chartYScale(domain: 1...4)
+        .padding()
     }
 }

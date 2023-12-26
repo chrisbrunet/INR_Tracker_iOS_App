@@ -22,6 +22,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 vc.update = true
             }
         }
+        if segue.identifier == "viewChartSegue" {
+            if let vc = segue.destination as? ChartViewController {
+                vc.data = inrArray
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -73,6 +78,7 @@ extension ViewController: DataDelegate {
             inrArray = try JSONDecoder().decode([Test].self, from: newArray.data(using: .utf8)!)
             print("Data decoded - " + String(inrArray.count) + " entries")
             inrArray.sort(by: { $0.date > $1.date })
+//            print(inrArray)
         } catch {
             print("Failed to decode")
         }
