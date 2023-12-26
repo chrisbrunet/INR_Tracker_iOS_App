@@ -319,6 +319,7 @@
 				DEVELOPMENT_TEAM = 34ZJKJ84YB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = INR_Tracker_App_Storyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "INR Manager";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -347,6 +348,7 @@
 				DEVELOPMENT_TEAM = 34ZJKJ84YB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = INR_Tracker_App_Storyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "INR Manager";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
