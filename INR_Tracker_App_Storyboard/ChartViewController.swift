@@ -34,12 +34,18 @@ class ChartViewController: UIViewController {
             return nil
         }
         
-        let readings = formattedData.map { $0.reading }
-        var minReading = readings.min()
-        var maxReading = readings.max()
-        var meanReading = readings.reduce(0, +) / Double(readings.count)
+//        print(formattedData)
         
-        return UIHostingController(coder: coder, rootView: ContentView(average: meanReading, data: formattedData))
+        let readings = formattedData.map { $0.reading }
+        let minINRidx = formattedData.firstIndex { $0.reading == readings.min() } ?? 0
+        let maxINRidx = formattedData.firstIndex { $0.reading == readings.max() } ?? 0
+        let avgINR = readings.reduce(0, +) / Double(readings.count)
+        
+        return UIHostingController(coder: coder, rootView: ContentView(
+            data: formattedData,
+            average: avgINR,
+            min: minINRidx,
+            max: maxINRidx))
     }
     
     override func viewDidLoad() {
@@ -49,34 +55,71 @@ class ChartViewController: UIViewController {
 }
 
 struct ContentView: View {
-    var average: Double
     var data: [FormattedTest]
+    var average: Double
+    var min: Int
+    var max: Int
+    
+    @State private var trToggle = false
+    @State private var avgToggle = false
+    @State private var minmaxToggle = false
     
     var body: some View {
-        VStack {
-            if data.isEmpty {
-                Text("No data available")
-            } else {
-                Chart {
-                    ForEach(data) { dataPoint in
-                        LineMark(x: .value("Date", dataPoint.date),
-                                 y: .value("INR", dataPoint.reading))
+        VStack{
+            
+            Chart {
+                ForEach(data) { dataPoint in
+                    LineMark(x: .value("Date", dataPoint.date),
+                             y: .value("INR", dataPoint.reading))
+                }
+                
+                if minmaxToggle {
+                    PointMark(x: .value("Date", data[min].date),
+                              y: .value("INR", data[min].reading))
+                    .foregroundStyle(.red)
+                    .annotation(position: .bottom,
+                                alignment: .center) {
+                        Text("" + String(data[min].reading))
+                            .fontWeight(.bold)
+                            .background(Rectangle()
+                                .foregroundColor(.white))
                     }
                     
+                    PointMark(x: .value("Date", data[max].date),
+                              y: .value("INR", data[max].reading))
+                    .foregroundStyle(.red)
+                    .annotation(position: .top,
+                                alignment: .center) {
+                        Text("" + String(data[max].reading))
+                            .fontWeight(.bold)
+                            .background(Rectangle()
+                                .foregroundColor(.white))
+                    }
+                }
+                
+                if trToggle {
                     RuleMark(y: .value("MinTR", 2))
                         .foregroundStyle(.red)
                         .annotation(position: .bottom,
                                     alignment: .bottomLeading) {
-                            Text("Therapeutic Range Min: 2")
+                            Text("TR Min: 2.0")
+                                .fontWeight(.bold)
+                                .background(Rectangle()
+                                    .foregroundColor(.white))
                         }
                     
                     RuleMark(y: .value("MaxTR", 3.5))
                         .foregroundStyle(.red)
                         .annotation(position: .top,
                                     alignment: .bottomLeading) {
-                            Text("Therapeutic Range Max: 3.5")
+                            Text("TR Max: 3.5")
+                                .fontWeight(.bold)
+                                .background(Rectangle()
+                                    .foregroundColor(.white))
                         }
-                    
+                }
+                
+                if avgToggle {
                     RuleMark(y: .value("Average", average))
                         .foregroundStyle(.green)
                         .lineStyle(StrokeStyle(lineWidth: 6, dash: [14,7]))
@@ -84,11 +127,42 @@ struct ContentView: View {
                                     alignment: .bottomLeading) {
                             Text("Avg: " + String(format: "%.1f", average))
                                 .fontWeight(.bold)
+                                .background(Rectangle()
+                                    .foregroundColor(.white))
                         }
                 }
-                .chartYScale(domain: 1...4)
-                .padding()
+                
             }
+            .chartYScale(domain: (data[min].reading - 0.1)...(data[max].reading + 0.1))
+            .padding()
+            
+            HStack{
+                Spacer()
+                
+                Toggle(isOn: $trToggle) {
+                    Text("Therapeutic Range")
+                }
+                
+            }.padding()
+            
+            HStack{
+                Spacer()
+                
+                Toggle(isOn: $avgToggle) {
+                    Text("Average")
+                }
+                                
+            }.padding()
+            
+            HStack{
+                Spacer()
+                
+                Toggle(isOn: $minmaxToggle) {
+                    Text("Min/Max")
+                }
+                                
+            }.padding()
+            
         }
     }
 }
