@@ -64,11 +64,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         APIFunctions.functions.delegate = self
-//        APIFunctions.functions.fetchTests()
         
         mainTableView.delegate = self
         mainTableView.dataSource = self
-        // Do any additional setup after loading the view.
     }
 }
 
