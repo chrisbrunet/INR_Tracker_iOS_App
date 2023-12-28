@@ -29,11 +29,11 @@ class AddTestViewController: UIViewController {
         let dateString = dateFormatter.string(from: dateField.date)
         
         if update == true{
+            print("Test Updated:")
             APIFunctions.functions.updateTest(id: test!._id, date: dateString, reading: readingField.text!, notes: notesField.text!)
-            print("Test updated")
         } else {
+            print("Test Created:")
             APIFunctions.functions.createTest(date: dateString, reading: readingField.text!, notes: notesField.text!)
-            print("Test created")
         }
         self.navigationController?.popViewController(animated: true)
     }
@@ -41,7 +41,7 @@ class AddTestViewController: UIViewController {
     
     @IBAction func deleteClick(_ sender: Any) {
         APIFunctions.functions.deleteTest(id: test!._id)
-        print("Test deleted")
+        print("Test Deleted\nResult:")
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -63,7 +63,6 @@ class AddTestViewController: UIViewController {
             
             if let dateString = test?.date,
                let date = dateFormatter.date(from: dateString) {
-                print(date)
                 let updatedDate = date.addingTimeInterval(7 * 3600) // manually adding 7 hours to the date because this is so painful
                 dateField.timeZone = TimeZone(identifier: "America/Denver")
                 dateField.setDate(updatedDate, animated: true)

@@ -37,6 +37,7 @@ class APIFunctions{
     static let functions = APIFunctions()
     
     func fetchTests(){
+        print("Fetching INR Tests...")
         var urlBody = ""
         if local {
             urlBody = "http://" + ip + ":" + port + "/fetch"
@@ -46,7 +47,6 @@ class APIFunctions{
         AF.request(urlBody).response { response in
             let data = String(data: response.data!, encoding: .utf8)
             self.delegate?.updateArray(newArray: data!)
-            print("INR Tests Fetched")
         }
     }
     
@@ -63,15 +63,16 @@ class APIFunctions{
             "notes": notes
         ]
         
-        print(parameters)
-
         AF.request(urlBody,
                    method: .post,
                    parameters: parameters,
                    encoder: JSONParameterEncoder.default,
                    headers: nil
         ).response { response in
+            print(parameters)
+            print("Result:")
             print(response.result)
+            print("")
         }
     }
     
@@ -95,7 +96,10 @@ class APIFunctions{
                    encoder: JSONParameterEncoder.default,
                    headers: nil
         ).response { response in
+            print(parameters)
+            print("Result:")
             print(response.result)
+            print("")
         }
     }
     
@@ -117,6 +121,7 @@ class APIFunctions{
                    headers: nil
         ).response { response in
             print(response.result)
+            print("")
         }
     }
 }

@@ -76,7 +76,6 @@ extension ViewController: DataDelegate {
             inrArray = try JSONDecoder().decode([Test].self, from: newArray.data(using: .utf8)!)
             print("Data decoded - " + String(inrArray.count) + " entries")
             inrArray.sort(by: { $0.date > $1.date })
-//            print(inrArray)
         } catch {
             print("Failed to decode")
         }
