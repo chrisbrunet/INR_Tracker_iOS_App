@@ -83,9 +83,7 @@ struct ContentView: View {
     var body: some View {
         
         NavigationStack{
-            
             VStack{
-                
                 VStack(alignment: .leading, spacing: 12){
                     HStack{
                         Picker("", selection: $currentTab) {
@@ -104,11 +102,11 @@ struct ContentView: View {
                         .fill(.white.shadow(.drop(radius: 2)))
                 }
             }
-            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity, alignment: .top)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding()
 //            .navigationTitle("Chart")
             .onChange(of: currentTab) { selection in
-                data = data
+//                data = formattedData
 //                handleChange(selection: selection)
                 animateGraph(fromChange: true)
             }
@@ -120,7 +118,7 @@ struct ContentView: View {
                     Text("Therapeutic Range")
                 }
 
-            }.padding() // TR Toggle
+            }.padding()
 
             HStack{
                 Spacer()
@@ -129,7 +127,7 @@ struct ContentView: View {
                     Text("Average")
                 }
 
-            }.padding() // Avg Toggle
+            }.padding()
 
             HStack{
                 Spacer()
@@ -138,7 +136,7 @@ struct ContentView: View {
                     Text("Min/Max")
                 }
 
-            }.padding() // Min Max Toggle
+            }.padding()
         }
     }
     
@@ -147,7 +145,12 @@ struct ContentView: View {
         Chart {
             ForEach(data) { dataPoint in
                 LineMark(x: .value("Date", dataPoint.date),
-                         y: .value("INR", dataPoint.reading))
+                         y: .value("INR", dataPoint.animate ? dataPoint.reading : average)
+                )
+                
+//                if let currentActiveItem, data[currentActiveItem].id == dataPoint.id {
+//                    RuleMark(x: .value("Date", data[currentActiveItem].reading))
+//                }
             }
             
             if minmaxToggle {
@@ -211,7 +214,28 @@ struct ContentView: View {
             
         }
         .chartYScale(domain: (data[min].reading - 0.1)...(data[max].reading + 0.1))
-        .padding()
+//        .chartOverlay(content: {proxy in
+//            GeometryReader{innerProxy in
+//                Rectangle()
+//                    .fill(.clear).contentShape(Rectangle())
+//                    .gesture(
+//                        DragGesture()
+//                            .onChanged{ value in
+//                                let location = value.location
+//                                if let touchDate: Date = proxy.value(atX: location.x){
+//                                    
+//                                    print(touchDate)
+//                                    let currentItem = data.firstIndex(where: { $0.date == touchDate })
+//                                    print(data[currentItem ?? 0].reading)
+//                                    
+////                                    self.currentActiveItem = data[currentItem]
+//                                }
+//                            }.onEnded{value in
+//                                self.currentActiveItem = nil
+//                            }
+//                    )
+//            }
+//        })
         .onAppear(){
            animateGraph()
        }
@@ -219,7 +243,8 @@ struct ContentView: View {
     
     func animateGraph(fromChange: Bool = false){
         for (index,_) in data.enumerated(){
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * (fromChange ? 0.03 : 0.05)){
+            data[index].animate = false
+            DispatchQueue.main.asyncAfter(deadline: .now()){
                 withAnimation(fromChange ? .easeInOut(duration: 0.8) :
                         .interactiveSpring(response: 0.8, dampingFraction: 0.8, blendDuration: 0.8)){
                     data[index].animate = true
@@ -229,10 +254,11 @@ struct ContentView: View {
     }
     
     func handleChange(selection: String){
-        if selection != "90 Days" {
-            for (index,_) in data.enumerated(){
-                data[index].reading = .random(in: 2...3)
-            }
+        if selection == "90 Days" {
+//            for (index,_) in data.enumerated(){
+//                data[index].reading = .random(in: 2...3)
+//            }
+            data = ninetyDaysData
         }
     }
 }
