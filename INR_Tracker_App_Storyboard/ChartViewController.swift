@@ -37,8 +37,9 @@ class ChartViewController: UIViewController {
                 
         let readings = formattedData.map { $0.reading }
         let minINRidx = formattedData.firstIndex { $0.reading == readings.min() } ?? 0
+        let minReading = formattedData[minINRidx].reading
         let maxINRidx = formattedData.firstIndex { $0.reading == readings.max() } ?? 0
-        let avgINR = readings.reduce(0, +) / Double(readings.count)
+        let maxReading = formattedData[maxINRidx].reading
         
         let ninetyDays = filterTestsLastNDays(days: 90, tests: formattedData)
         let oneYear = filterTestsLastNDays(days: 365, tests: formattedData)
@@ -47,9 +48,10 @@ class ChartViewController: UIViewController {
             data: formattedData,
             ninetyDaysData: ninetyDays,
             oneYearData: oneYear,
-            average: avgINR,
-            min: minINRidx,
-            max: maxINRidx))
+            allDataInit: formattedData,
+            allDataMin: minReading,
+            allDataMax: maxReading)
+        )
     }
     
     override func viewDidLoad() {
@@ -70,15 +72,15 @@ struct ContentView: View {
     @State var data: [FormattedTest]
     @State var ninetyDaysData: [FormattedTest]
     @State var oneYearData: [FormattedTest]
-    @State var average: Double
-    @State var min: Int
-    @State var max: Int
-    
     
     @State private var trToggle = false
     @State private var avgToggle = false
     @State private var minmaxToggle = false
     @State private var currentTab = "All Time"
+    
+    let allDataInit: [FormattedTest]
+    let allDataMin: Double
+    let allDataMax: Double
     
     var body: some View {
         
@@ -102,12 +104,11 @@ struct ContentView: View {
                         .fill(.white.shadow(.drop(radius: 2)))
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity, alignment: .top)
             .padding()
 //            .navigationTitle("Chart")
             .onChange(of: currentTab) { selection in
-//                data = formattedData
-//                handleChange(selection: selection)
+                handleChange(selection: selection)
                 animateGraph(fromChange: true)
             }
             
@@ -142,15 +143,43 @@ struct ContentView: View {
     
     @ViewBuilder
     func AnimatedChart() -> some View {
+        
+        let readings = data.map { $0.reading }
+        let average = readings.reduce(0, +) / Double(readings.count)
+        let min = data.firstIndex { $0.reading == readings.min() } ?? 0
+        let max = data.firstIndex { $0.reading == readings.max() } ?? 0
+        
+        let curColor = Color(hue: 0.6, saturation: 0.81, brightness: 0.76)
+        let curGradient = LinearGradient(
+             gradient: Gradient (
+                 colors: [
+                    curColor.opacity(0.5),
+                    curColor.opacity(0.2),
+                    curColor.opacity(0.05),
+                ]
+            ),
+            startPoint: .top,
+             endPoint: .bottom
+        )
+        
         Chart {
             ForEach(data) { dataPoint in
                 LineMark(x: .value("Date", dataPoint.date),
                          y: .value("INR", dataPoint.animate ? dataPoint.reading : average)
                 )
+                .interpolationMethod(.catmullRom)
                 
 //                if let currentActiveItem, data[currentActiveItem].id == dataPoint.id {
 //                    RuleMark(x: .value("Date", data[currentActiveItem].reading))
 //                }
+                
+                AreaMark(x: .value("Date", dataPoint.date),
+                         yStart: .value("INR", dataPoint.animate ? allDataMin : allDataMin/*allData[allDataMin].reading - 0.1 : allData[allDataMin].reading - 0.1*/),
+                         yEnd: .value("INR", dataPoint.animate ? dataPoint.reading : average)
+                )
+                .interpolationMethod(.catmullRom)
+                .foregroundStyle(curGradient)
+    
             }
             
             if minmaxToggle {
@@ -162,7 +191,7 @@ struct ContentView: View {
                     Text("" + String(data[min].reading))
                         .fontWeight(.bold)
                         .background(Rectangle()
-                            .foregroundColor(.white))
+                            .foregroundColor(.clear))
                 }
                 
                 PointMark(x: .value("Date", data[max].date),
@@ -173,7 +202,7 @@ struct ContentView: View {
                     Text("" + String(data[max].reading))
                         .fontWeight(.bold)
                         .background(Rectangle()
-                            .foregroundColor(.white))
+                            .foregroundColor(.clear))
                 }
             }
             
@@ -185,7 +214,7 @@ struct ContentView: View {
                         Text("TR Min: 2.0")
                             .fontWeight(.bold)
                             .background(Rectangle()
-                                .foregroundColor(.white))
+                                .foregroundColor(.clear))
                     }
                 
                 RuleMark(y: .value("MaxTR", 3.5))
@@ -195,7 +224,7 @@ struct ContentView: View {
                         Text("TR Max: 3.5")
                             .fontWeight(.bold)
                             .background(Rectangle()
-                                .foregroundColor(.white))
+                                .foregroundColor(.clear))
                     }
             }
             
@@ -208,12 +237,12 @@ struct ContentView: View {
                         Text("Avg: " + String(format: "%.1f", average))
                             .fontWeight(.bold)
                             .background(Rectangle()
-                                .foregroundColor(.white))
+                                .foregroundColor(.clear))
                     }
             }
             
         }
-        .chartYScale(domain: (data[min].reading - 0.1)...(data[max].reading + 0.1))
+        .chartYScale(domain: /*(allData[allDataMin].reading - 0.1)...(allData[allDataMax].reading + 0.1)*/allDataMin - 0.1 ... allDataMax + 0.1)
 //        .chartOverlay(content: {proxy in
 //            GeometryReader{innerProxy in
 //                Rectangle()
@@ -223,11 +252,11 @@ struct ContentView: View {
 //                            .onChanged{ value in
 //                                let location = value.location
 //                                if let touchDate: Date = proxy.value(atX: location.x){
-//                                    
+//
 //                                    print(touchDate)
 //                                    let currentItem = data.firstIndex(where: { $0.date == touchDate })
 //                                    print(data[currentItem ?? 0].reading)
-//                                    
+//
 ////                                    self.currentActiveItem = data[currentItem]
 //                                }
 //                            }.onEnded{value in
@@ -243,7 +272,6 @@ struct ContentView: View {
     
     func animateGraph(fromChange: Bool = false){
         for (index,_) in data.enumerated(){
-            data[index].animate = false
             DispatchQueue.main.asyncAfter(deadline: .now()){
                 withAnimation(fromChange ? .easeInOut(duration: 0.8) :
                         .interactiveSpring(response: 0.8, dampingFraction: 0.8, blendDuration: 0.8)){
@@ -255,10 +283,11 @@ struct ContentView: View {
     
     func handleChange(selection: String){
         if selection == "90 Days" {
-//            for (index,_) in data.enumerated(){
-//                data[index].reading = .random(in: 2...3)
-//            }
             data = ninetyDaysData
+        } else if selection == "1 Year" {
+            data = oneYearData
+        } else {
+            data = allDataInit
         }
     }
 }
