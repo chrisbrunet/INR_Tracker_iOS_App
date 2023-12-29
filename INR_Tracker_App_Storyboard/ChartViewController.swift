@@ -77,67 +77,102 @@ struct ContentView: View {
     @State private var avgToggle = false
     @State private var minmaxToggle = false
     @State private var currentTab = "All Time"
+    @State var currentActiveItem: FormattedTest?
     
     let allDataInit: [FormattedTest]
     let allDataMin: Double
     let allDataMax: Double
     
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
     var body: some View {
         
         NavigationStack{
-            VStack{
-                VStack(alignment: .leading, spacing: 12){
-                    HStack{
-                        Picker("", selection: $currentTab) {
-                            Text("All Time").tag("All Time")
-                            Text("1 Year").tag("1 Year")
-                            Text("90 Days").tag("90 Days")
-                        }
-                        .pickerStyle(.segmented)
-                        .padding()
-                    }
-                    AnimatedChart()
-                }
-                .padding()
-                .background{
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(.white.shadow(.drop(radius: 2)))
-                }
-            }
-            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity, alignment: .top)
-            .padding()
-//            .navigationTitle("Chart")
-            .onChange(of: currentTab) { selection in
-                handleChange(selection: selection)
-                animateGraph(fromChange: true)
-            }
             
-            HStack{
-                Spacer()
-
-                Toggle(isOn: $trToggle) {
-                    Text("Therapeutic Range")
+            if verticalSizeClass == .regular {
+                
+                VStack{
+                    VStack(alignment: .leading, spacing: 12){
+                        HStack{
+                            Picker("", selection: $currentTab) {
+                                Text("All Time").tag("All Time")
+                                Text("1 Year").tag("1 Year")
+                                Text("90 Days").tag("90 Days")
+                            }
+                            .pickerStyle(.segmented)
+                            .padding()
+                        }
+                        AnimatedChart()
+                    }
+                    .padding()
+                    .background{
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(.white.shadow(.drop(radius: 2)))
+                    }
                 }
-
-            }.padding()
-
-            HStack{
-                Spacer()
-
-                Toggle(isOn: $avgToggle) {
-                    Text("Average")
+                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity, alignment: .top)
+                .padding()
+                .onChange(of: currentTab) { selection in
+                    handleChange(selection: selection)
+                    animateGraph(fromChange: true)
                 }
-
-            }.padding()
-
-            HStack{
-                Spacer()
-
-                Toggle(isOn: $minmaxToggle) {
-                    Text("Min/Max")
+                
+                HStack{
+                    Spacer()
+                    
+                    Toggle(isOn: $trToggle) {
+                        Text("Therapeutic Range")
+                    }
+                    
+                }.padding()
+                
+                HStack{
+                    Spacer()
+                    
+                    Toggle(isOn: $avgToggle) {
+                        Text("Average")
+                    }
+                    
+                }.padding()
+                
+                HStack{
+                    Spacer()
+                    
+                    Toggle(isOn: $minmaxToggle) {
+                        Text("Min/Max")
+                    }
+                    
+                }.padding()
+                
+            } else {
+                
+                VStack{
+                    VStack(alignment: .leading, spacing: 12){
+                        HStack{
+                            Picker("", selection: $currentTab) {
+                                Text("All Time").tag("All Time")
+                                Text("1 Year").tag("1 Year")
+                                Text("90 Days").tag("90 Days")
+                            }
+                            .pickerStyle(.segmented)
+                            .padding()
+                        }
+                        AnimatedChart()
+                    }
+                    .padding()
+                    .background{
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(.white.shadow(.drop(radius: 2)))
+                    }
                 }
-
-            }.padding()
+                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity, alignment: .top)
+                .padding()
+                .onChange(of: currentTab) { selection in
+                    handleChange(selection: selection)
+                    animateGraph(fromChange: true)
+                }
+                
+            }
         }
     }
     
@@ -168,17 +203,34 @@ struct ContentView: View {
                          y: .value("INR", dataPoint.animate ? dataPoint.reading : average)
                 )
                 .interpolationMethod(.catmullRom)
-                
-//                if let currentActiveItem, data[currentActiveItem].id == dataPoint.id {
-//                    RuleMark(x: .value("Date", data[currentActiveItem].reading))
-//                }
+                .symbol(.circle)
                 
                 AreaMark(x: .value("Date", dataPoint.date),
-                         yStart: .value("INR", dataPoint.animate ? allDataMin : allDataMin/*allData[allDataMin].reading - 0.1 : allData[allDataMin].reading - 0.1*/),
+                         yStart: .value("INR", dataPoint.animate ? allDataMin : allDataMin),
                          yEnd: .value("INR", dataPoint.animate ? dataPoint.reading : average)
                 )
                 .interpolationMethod(.catmullRom)
                 .foregroundStyle(curGradient)
+                
+                if let currentActiveItem, currentActiveItem.id == dataPoint.id {
+                    RuleMark(x: .value("Date", currentActiveItem.date))
+                        .lineStyle(.init(lineWidth: 2, dash: [2], dashPhase: 5))
+                        .annotation(position: .top){
+                            VStack(alignment: .leading, spacing: 6){
+                                Text("INR")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                Text(String(currentActiveItem.reading))
+                                    .font(.title3.bold())
+                            }
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background{
+                                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                    .fill(.white.shadow(.drop(radius: 2)))
+                            }
+                        }
+                }
     
             }
             
@@ -190,8 +242,12 @@ struct ContentView: View {
                             alignment: .center) {
                     Text("" + String(data[min].reading))
                         .fontWeight(.bold)
-                        .background(Rectangle()
-                            .foregroundColor(.clear))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background{
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(.white.shadow(.drop(radius: 2)))
+                        }
                 }
                 
                 PointMark(x: .value("Date", data[max].date),
@@ -201,8 +257,12 @@ struct ContentView: View {
                             alignment: .center) {
                     Text("" + String(data[max].reading))
                         .fontWeight(.bold)
-                        .background(Rectangle()
-                            .foregroundColor(.clear))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background{
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(.white.shadow(.drop(radius: 2)))
+                        }
                 }
             }
             
@@ -213,8 +273,12 @@ struct ContentView: View {
                                 alignment: .bottomLeading) {
                         Text("TR Min: 2.0")
                             .fontWeight(.bold)
-                            .background(Rectangle()
-                                .foregroundColor(.clear))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background{
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(.white.shadow(.drop(radius: 2)))
+                            }
                     }
                 
                 RuleMark(y: .value("MaxTR", 3.5))
@@ -223,8 +287,12 @@ struct ContentView: View {
                                 alignment: .bottomLeading) {
                         Text("TR Max: 3.5")
                             .fontWeight(.bold)
-                            .background(Rectangle()
-                                .foregroundColor(.clear))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background{
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(.white.shadow(.drop(radius: 2)))
+                            }
                     }
             }
             
@@ -232,39 +300,50 @@ struct ContentView: View {
                 RuleMark(y: .value("Average", average))
                     .foregroundStyle(.green)
                     .lineStyle(StrokeStyle(lineWidth: 6, dash: [14,7]))
-                    .annotation(position: .top,
+                    .annotation(position: .automatic,
                                 alignment: .bottomLeading) {
                         Text("Avg: " + String(format: "%.1f", average))
                             .fontWeight(.bold)
-                            .background(Rectangle()
-                                .foregroundColor(.clear))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background{
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(.white.shadow(.drop(radius: 2)))
+                            }
                     }
             }
             
         }
-        .chartYScale(domain: /*(allData[allDataMin].reading - 0.1)...(allData[allDataMax].reading + 0.1)*/allDataMin - 0.1 ... allDataMax + 0.1)
-//        .chartOverlay(content: {proxy in
-//            GeometryReader{innerProxy in
-//                Rectangle()
-//                    .fill(.clear).contentShape(Rectangle())
-//                    .gesture(
-//                        DragGesture()
-//                            .onChanged{ value in
-//                                let location = value.location
-//                                if let touchDate: Date = proxy.value(atX: location.x){
-//
-//                                    print(touchDate)
-//                                    let currentItem = data.firstIndex(where: { $0.date == touchDate })
-//                                    print(data[currentItem ?? 0].reading)
-//
-////                                    self.currentActiveItem = data[currentItem]
-//                                }
-//                            }.onEnded{value in
-//                                self.currentActiveItem = nil
-//                            }
-//                    )
-//            }
-//        })
+        .chartYScale(domain: allDataMin - 0.2 ... allDataMax + 0.2)
+        .chartOverlay(content: {proxy in
+            GeometryReader{innerProxy in
+                Rectangle()
+                    .fill(.clear).contentShape(Rectangle())
+                    .gesture(
+                        DragGesture()
+                            .onChanged{ value in
+                                let location = value.location
+                                if let touchDate: Date = proxy.value(atX: location.x){
+                                    
+                                    let calendar = Calendar.current
+                                    let day = calendar.component(.day, from: touchDate)
+                                    let month = calendar.component(.month, from: touchDate)
+                                    let year = calendar.component(.year, from: touchDate)
+                                    
+                                    if let currentItem = data.first(where: { item in
+                                        calendar.component(.day, from: item.date) == day &&
+                                        calendar.component(.month, from: item.date) == month &&
+                                        calendar.component(.year, from: item.date) == year
+                                    }){
+                                        self.currentActiveItem = currentItem
+                                    }
+                                }
+                            }.onEnded{value in
+                                self.currentActiveItem = nil
+                            }
+                    )
+            }
+        })
         .onAppear(){
            animateGraph()
        }
