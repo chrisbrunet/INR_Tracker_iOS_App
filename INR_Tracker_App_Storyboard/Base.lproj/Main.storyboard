@@ -98,7 +98,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="cw9-Yb-9Bb">
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="cw9-Yb-9Bb">
                                 <rect key="frame" x="15" y="118" width="363" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ccc-op-shA">
@@ -108,27 +108,27 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Rvh-GI-b0p">
-                                        <rect key="frame" x="58.333333333333343" y="0.0" width="304.66666666666663" height="50"/>
+                                        <rect key="frame" x="48.333333333333343" y="0.0" width="314.66666666666663" height="50"/>
                                     </datePicker>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Fts-5r-09G">
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fts-5r-09G">
                                 <rect key="frame" x="15" y="183" width="363" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0H-46-fOx">
-                                        <rect key="frame" x="0.0" y="0.0" width="103.66666666666667" height="34"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="29" height="34"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="fill" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="eg. 2.5" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Qt-lC-jhw">
-                                        <rect key="frame" x="103.66666666666666" y="0.0" width="259.33333333333337" height="34"/>
+                                        <rect key="frame" x="57" y="0.0" width="306" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                     </textField>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="56" translatesAutoresizingMaskIntoConstraints="NO" id="9IC-We-7xo">
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="9IC-We-7xo">
                                 <rect key="frame" x="15" y="232" width="363" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L02-io-IhQ">
@@ -138,7 +138,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="fill" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sdW-al-MwL">
-                                        <rect key="frame" x="104.33333333333334" y="0.0" width="258.66666666666663" height="34"/>
+                                        <rect key="frame" x="58.333333333333343" y="0.0" width="304.66666666666663" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
@@ -156,6 +156,7 @@
                             <constraint firstItem="9IC-We-7xo" firstAttribute="leading" secondItem="5Z7-2D-LeI" secondAttribute="leading" constant="15" id="PjM-xE-pfc"/>
                             <constraint firstItem="cw9-Yb-9Bb" firstAttribute="top" secondItem="5Z7-2D-LeI" secondAttribute="top" constant="15" id="UGl-Jh-2vg"/>
                             <constraint firstItem="Fts-5r-09G" firstAttribute="leading" secondItem="5Z7-2D-LeI" secondAttribute="leading" constant="15" id="Uh6-gJ-J6T"/>
+                            <constraint firstItem="I0H-46-fOx" firstAttribute="width" secondItem="L02-io-IhQ" secondAttribute="width" multiplier="0.6" id="e2y-o9-L2f"/>
                             <constraint firstItem="Fts-5r-09G" firstAttribute="top" secondItem="cw9-Yb-9Bb" secondAttribute="bottom" constant="15" id="uRS-XS-mt9"/>
                         </constraints>
                     </view>
