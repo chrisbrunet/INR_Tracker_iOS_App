@@ -5,9 +5,11 @@ var app = express()
 var Data = require("./inrSchema")
 const config = require('./config')
 
+// Pulling database credentials from config file
 const username = config.username
 const password = config.password
 
+// Connecting to MongoDB Atlas cluster using Mongoose
 mongoose.connect(`mongodb+srv://${username}:${password}@cbcluster.nygn6bq.mongodb.net/inrDB`)
 mongoose.connection.once("open", () => {
     console.log("Connected to DB")
@@ -22,6 +24,7 @@ app.post("/create", (req, res) => {
 
     let date, reading, notes
 
+    // Query used for testing with Postman
     if(req.body.date && req.body.reading){
         console.log("PRINTING REQUEST BODY")
         console.log(req.body)
@@ -38,12 +41,14 @@ app.post("/create", (req, res) => {
         notes = req.query.notes
     }
 
+    // populating newTest which must adhere to Data's schema
     var newTest = new Data({
         date: date,
         reading: reading,
         notes: notes
     })
 
+    // Mongoose function to add entry to database 
     newTest.save().then(() => {
         if (newTest.isNew == false){
             console.log("Saved new INR test")
@@ -55,8 +60,9 @@ app.post("/create", (req, res) => {
 })
 
 // Read all tests
+// Mongoose function to fetch all tests (no search criteria)
 app.get("/fetch", (req, res) => {
-    Data.find({}).then((DBItems) => {
+    Data.find({}).then((DBItems) => { 
         console.log("All Data Fetched")
         res.send(DBItems)
     })
@@ -67,6 +73,7 @@ app.post("/update", (req, res) => {
 
     let id, date, reading, notes
 
+    // Query used for testing with Postman
     if(req.body.date && req.body.reading){
         console.log("PRINTING REQUEST BODY")
         console.log(req.body)
@@ -85,6 +92,7 @@ app.post("/update", (req, res) => {
         notes = req.query.notes
     }
 
+    // Mongoose function to update entry by entry id
     Data.findOneAndUpdate({
         _id: id
     }, {
@@ -107,6 +115,7 @@ app.post("/delete", (req, res) => {
 
     let id
 
+    // Query used for testing with Postman
     if(req.body.id){
         console.log("PRINTING REQUEST BODY")
         console.log(req.body)
@@ -119,6 +128,7 @@ app.post("/delete", (req, res) => {
         id = req.query.id
     }
 
+    // Mongoose function to delete entry by id
     Data.findOneAndDelete({
         _id: id
     }).then((deletedItem) => {
@@ -132,12 +142,13 @@ app.post("/delete", (req, res) => {
     })
 })
 
-
+// binding with the host and port to listen for any connections
 const PORT = process.env.PORT || 8081
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`)
 })
 
+// function to parse date format from front end to be understood by database
 function parseCustomDate(dateString) {
     const parts = dateString.split(' ')
     const dateParts = parts[0].split('-')

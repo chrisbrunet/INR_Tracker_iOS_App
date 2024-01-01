@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 
+// defining stuct for raw data transfer between server and app
 struct Test: Codable, Comparable, Identifiable {
     var _id: String
     var date: String
@@ -16,6 +17,7 @@ struct Test: Codable, Comparable, Identifiable {
     
     var id: String {return date}
     
+    // overriding comparison operators to sort entries
     static func < (lhs: Test, rhs: Test) -> Bool {
             return lhs.date < rhs.date
         }
@@ -27,15 +29,22 @@ struct Test: Codable, Comparable, Identifiable {
 
 class APIFunctions{
     
+    // specify constants for both local and cloud servers
     let ip = "localhost"
     let port = "8081"
     let url = "https://inr-app-409117.uc.r.appspot.com/"
     
+    // manually select server type (use local = true for testing)
     let local = false
     
+    // defining delegate property that can hold a reference to any object conforming to the DataDelegate protocol
+    // will be used to reference ViewController where it sets itself as the delegate
     var delegate: DataDelegate?
+    
+    // allows for instantiating object of APIFunctions in other classes
     static let functions = APIFunctions()
     
+    // accesses "/fetch" endpoint
     func fetchTests(){
         print("Fetching INR Tests...")
         var urlBody = ""
@@ -46,10 +55,12 @@ class APIFunctions{
         }
         AF.request(urlBody).response { response in
             let data = String(data: response.data!, encoding: .utf8)
+            // triggers the updateArray method in any class that conforms to the DataDelegate protocol
             self.delegate?.updateArray(newArray: data!)
         }
     }
     
+    // accesses "/create" endpoint with parameters for new entry
     func createTest(date: String, reading: String, notes: String) {
         var urlBody = ""
         if local {
@@ -76,7 +87,8 @@ class APIFunctions{
         }
     }
     
-    func updateTest(id:String, date: String, reading: String, notes: String) {
+    // accesses "/update" endpoint with parameters for updated entry
+    func updateTest(id: String, date: String, reading: String, notes: String) {
         var urlBody = ""
         if local {
             urlBody = "http://" + ip + ":" + port + "/update"
@@ -103,6 +115,7 @@ class APIFunctions{
         }
     }
     
+    // accesses "/delete" endpoint with parameters for removed entry
     func deleteTest(id:String) {
         var urlBody = ""
         if local {

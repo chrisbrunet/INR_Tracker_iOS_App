@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 import Charts
 
+// defining a new version of Test with data types that are easier to use with charts
 struct FormattedTest: Identifiable {
     var date: Date
     var reading: Double
@@ -19,14 +20,18 @@ struct FormattedTest: Identifiable {
 
 class ChartViewController: UIViewController {
     
+    // instantiating data and formattedData arrays
     var data = [Test]()
     var formattedData = [FormattedTest]()
     
+    // segue to send data to the embedded SwiftUI view (basically the chart)
     @IBSegueAction func embedSwiftUIView(_ coder: NSCoder) -> UIViewController? {
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
+        // cast Test attributes to new types and map to formattedTest
         formattedData = data.compactMap { test in
             if let date = dateFormatter.date(from: test.date),
                let reading = Double(test.reading) {
@@ -34,7 +39,8 @@ class ChartViewController: UIViewController {
             }
             return nil
         }
-                
+        
+        // calculating static variables to be used for chart formatting
         let readings = formattedData.map { $0.reading }
         let minINRidx = formattedData.firstIndex { $0.reading == readings.min() } ?? 0
         let minReading = formattedData[minINRidx].reading
@@ -44,6 +50,7 @@ class ChartViewController: UIViewController {
         let ninetyDays = filterTestsLastNDays(days: 90, tests: formattedData)
         let oneYear = filterTestsLastNDays(days: 365, tests: formattedData)
         
+        // sending data to the embedded SwiftUI ContentView
         return UIHostingController(coder: coder, rootView: ContentView(
             data: formattedData,
             ninetyDaysData: ninetyDays,
@@ -54,11 +61,13 @@ class ChartViewController: UIViewController {
         )
     }
     
+    // standard viewDidLoad override
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Chart Controller Connected")
     }
     
+    // function used to filter formatted test data by number of days from current date
     func filterTestsLastNDays(days: Int, tests: [FormattedTest]) -> [FormattedTest] {
         let currentDate = Date()
         let sixtyDaysAgo = Calendar.current.date(byAdding: .day, value: -(days), to: currentDate)!
@@ -67,22 +76,27 @@ class ChartViewController: UIViewController {
     }
 }
 
+// SwfitUI
 struct ContentView: View {
     
+    // instantiating variables to be mapped from segue
     @State var data: [FormattedTest]
     @State var ninetyDaysData: [FormattedTest]
     @State var oneYearData: [FormattedTest]
     
+    // variables from user interface
     @State private var trToggle = false
     @State private var avgToggle = false
     @State private var minmaxToggle = false
     @State private var currentTab = "All Time"
     @State var currentActiveItem: FormattedTest?
     
+    // instantiating constants from segue
     let allDataInit: [FormattedTest]
     let allDataMin: Double
     let allDataMax: Double
     
+    // environment variable used to determine if phone is horizontal or vertical
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     var body: some View {
@@ -91,6 +105,7 @@ struct ContentView: View {
             
             if verticalSizeClass == .regular {
                 
+                // Stack containing date picker and chart
                 VStack{
                     VStack(alignment: .leading, spacing: 12){
                         HStack{
@@ -117,6 +132,7 @@ struct ContentView: View {
                     animateGraph(fromChange: true)
                 }
                 
+                // below stack are toggles for additional overlays on chart
                 HStack{
                     Spacer()
                     
@@ -144,7 +160,7 @@ struct ContentView: View {
                     
                 }.padding()
                 
-            } else {
+            } else { // if phone is horizontal, exclude the toggles
                 
                 VStack{
                     VStack(alignment: .leading, spacing: 12){
@@ -167,6 +183,7 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity, alignment: .top)
                 .padding()
+                // handling change of the picker to filter dates and reanimate graph
                 .onChange(of: currentTab) { selection in
                     handleChange(selection: selection)
                     animateGraph(fromChange: true)
@@ -176,14 +193,17 @@ struct ContentView: View {
         }
     }
     
+    // Chart UI
     @ViewBuilder
     func AnimatedChart() -> some View {
         
+        // variables depeding on date filter
         let readings = data.map { $0.reading }
         let average = readings.reduce(0, +) / Double(readings.count)
         let min = data.firstIndex { $0.reading == readings.min() } ?? 0
         let max = data.firstIndex { $0.reading == readings.max() } ?? 0
         
+        // colour constants
         let curColor = Color(hue: 0.6, saturation: 0.81, brightness: 0.76)
         let curGradient = LinearGradient(
              gradient: Gradient (
@@ -199,19 +219,23 @@ struct ContentView: View {
         
         Chart {
             ForEach(data) { dataPoint in
+                
+                // creating line chart with smooth lines
                 LineMark(x: .value("Date", dataPoint.date),
-                         y: .value("INR", dataPoint.animate ? dataPoint.reading : average)
+                         y: .value("INR", dataPoint.animate ? dataPoint.reading : average) // animate bool used to start all values at the chart average
                 )
                 .interpolationMethod(.catmullRom)
                 .symbol(.circle)
                 
+                // adding shaded area under chart with gradient
                 AreaMark(x: .value("Date", dataPoint.date),
                          yStart: .value("INR", dataPoint.animate ? allDataMin : allDataMin),
-                         yEnd: .value("INR", dataPoint.animate ? dataPoint.reading : average)
+                         yEnd: .value("INR", dataPoint.animate ? dataPoint.reading : average) // shaded area to start at the minimun y val and end at current point
                 )
                 .interpolationMethod(.catmullRom)
                 .foregroundStyle(curGradient)
                 
+                // shows viertical line with card showing INR reading when currentActiveItem is not null and is equal to the date of the current point
                 if let currentActiveItem, currentActiveItem.id == dataPoint.id {
                     RuleMark(x: .value("Date", currentActiveItem.date))
                         .lineStyle(.init(lineWidth: 2, dash: [2], dashPhase: 5))
@@ -234,6 +258,7 @@ struct ContentView: View {
     
             }
             
+            // overlays minimum and maximum readings from current date filter as points if toggle is selected
             if minmaxToggle {
                 PointMark(x: .value("Date", data[min].date),
                           y: .value("INR", data[min].reading))
@@ -266,6 +291,7 @@ struct ContentView: View {
                 }
             }
             
+            // overlays therepeutic range as lines if toggle is selected
             if trToggle {
                 RuleMark(y: .value("MinTR", 2))
                     .foregroundStyle(.red)
@@ -296,6 +322,7 @@ struct ContentView: View {
                     }
             }
             
+            // overlays average readings from current date filter as a line if toggle is selected
             if avgToggle {
                 RuleMark(y: .value("Average", average))
                     .foregroundStyle(.green)
@@ -314,7 +341,9 @@ struct ContentView: View {
             }
             
         }
+        // chart axis formatting
         .chartYScale(domain: allDataMin - 0.2 ... allDataMax + 0.2)
+        // getting data from drag gesture and setting currentActiveItem
         .chartOverlay(content: {proxy in
             GeometryReader{innerProxy in
                 Rectangle()
@@ -345,10 +374,11 @@ struct ContentView: View {
             }
         })
         .onAppear(){
-           animateGraph()
+           animateGraph() // animating graph when chart is loaded
        }
     }
     
+    // function to animate graph using an interactive spring
     func animateGraph(fromChange: Bool = false){
         for (index,_) in data.enumerated(){
             DispatchQueue.main.asyncAfter(deadline: .now()){
@@ -360,6 +390,7 @@ struct ContentView: View {
         }
     }
     
+    // function to handle change in picker to filter chart date range
     func handleChange(selection: String){
         if selection == "90 Days" {
             data = ninetyDaysData

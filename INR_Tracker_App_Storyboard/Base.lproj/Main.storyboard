@@ -178,6 +178,7 @@
                     <connections>
                         <outlet property="dateField" destination="Rvh-GI-b0p" id="HGL-aQ-OYv"/>
                         <outlet property="deleteButton" destination="tXT-x7-5WS" id="gNV-PD-C2L"/>
+                        <outlet property="navBar" destination="IQZ-VN-vC6" id="TXR-jk-zSW"/>
                         <outlet property="notesField" destination="sdW-al-MwL" id="tLs-i9-TS0"/>
                         <outlet property="readingField" destination="4Qt-lC-jhw" id="vpH-Af-MW0"/>
                         <outlet property="saveButton" destination="NwN-3C-pZk" id="QHv-dI-vbe"/>

@@ -9,8 +9,8 @@ import UIKit
 
 class TestPrototypeCell: UITableViewCell {
     
+    // declaring outlets for labels in each table cell in the Storyboard UI
     @IBOutlet weak var reading: UILabel!
-    
     @IBOutlet weak var date: UILabel!
     
     override func awakeFromNib() {
